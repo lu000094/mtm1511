@@ -1,0 +1,214 @@
+<!-- MTM1511 Final Project -  Maplebrook Public Library - Events -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Events - Maplebrook Public Library</title>
+  
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Header
+
+       Same sticky header used on every page.
+       The "active" class moves to "Events" on this page.
+  -->
+  <header class="site-header">
+    <div class="header-inner">
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu">&#9776;</button>
+      <a href="index.html" class="site-logo">MPL</a>
+
+      <nav class="main-nav" aria-label="Main navigation">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="programs.html">Programs</a></li>
+          <li><a href="events.html" class="active">Events</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button class="header-btn">Search</button>
+        <button class="header-btn">Donate</button>
+        <button class="header-btn">Login</button>
+      </div>
+
+      <button class="search-btn" aria-label="Search">&#128269;</button>
+    </div>
+  </header>
+
+  <!-- Mobile Menu
+
+       Duplicated nav links for the full screen mobile overlay.
+  -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-menu-close" id="menuClose" aria-label="Close menu">&times;</button>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="programs.html">Programs</a></li>
+      <li><a href="events.html" class="active">Events</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+
+  <!-- Page Header -->
+  <section class="page-header">
+    <h1>Upcoming Events</h1>
+    <p>Join us for free events happening every week</p>
+  </section>
+
+  <!-- Filter Buttons and Event List 
+
+       I'm using data-filter attributes on the buttons and data-category
+       on each event so JS can show/hide events by audience type.
+       The "active" class fills the button green to show which filter is selected.
+  -->
+  <section class="section">
+    <div class="events-filter">
+      <button class="filter-btn active" data-filter="all">All Events</button>
+      <button class="filter-btn" data-filter="kids">Kids</button>
+      <button class="filter-btn" data-filter="teens">Teens</button>
+      <button class="filter-btn" data-filter="adults">Adults</button>
+      <button class="filter-btn" data-filter="seniors">Seniors</button>
+    </div>
+
+    <!-- Event List
+
+         Each event uses a two column grid: a compact date box on the left
+         and the event details on the right. The data-category attribute
+         matches the filter buttons above.
+    -->
+    <div class="event-list">
+
+      <article class="event-list-item" data-category="adults">
+        <div class="event-date-box">
+          <!-- split the date into day and month so I could style them separately -->
+          <span class="day">18</span>
+          <span class="month">Nov</span>
+        </div>
+        <div>
+          <h3>Book Club Meeting</h3>
+          <!-- I used bullet dot to separate the day and time on one line -->
+          <p class="event-time">Tuesday &bull; 6:00 PM - 7:30 PM</p>
+          <p>This month we are reading "The Night Circus" by Erin Morgenstern. Join fellow readers for a lively discussion in the community room. Light refreshments provided.</p>
+        </div>
+      </article>
+
+      <article class="event-list-item" data-category="kids">
+        <div class="event-date-box">
+          <span class="day">19</span>
+          <span class="month">Nov</span>
+        </div>
+        <div>
+          <h3>Story Time for Kids</h3>
+          <p class="event-time">Wednesday &bull; 10:30 AM - 11:15 AM</p>
+          <p>Interactive storytelling with songs and simple crafts for children ages 3 to 6. A parent or caregiver must stay for the session. No registration required.</p>
+        </div>
+      </article>
+
+      <article class="event-list-item" data-category="adults">
+        <div class="event-date-box">
+          <span class="day">20</span>
+          <span class="month">Nov</span>
+        </div>
+        <div>
+          <h3>Digital Skills Workshop</h3>
+          <p class="event-time">Thursday &bull; 2:00 PM - 3:30 PM</p>
+          <p>Learn the basics of email, searching the web, and staying safe online. This beginner-friendly class is great for new computer users. Registration recommended.</p>
+        </div>
+      </article>
+
+      <article class="event-list-item" data-category="kids">
+        <div class="event-date-box">
+          <span class="day">22</span>
+          <span class="month">Nov</span>
+        </div>
+        <div>
+          <h3>Saturday Art Workshop</h3>
+          <p class="event-time">Saturday &bull; 2:00 PM - 3:30 PM</p>
+          <p>Create your own watercolour painting with local artist Sarah Chen. Great for families with kids ages 7 and up. All materials provided. Space is limited.</p>
+        </div>
+      </article>
+
+      <article class="event-list-item" data-category="teens">
+        <div class="event-date-box">
+          <span class="day">25</span>
+          <span class="month">Nov</span>
+        </div>
+        <div>
+          <h3>Teen Gaming Night</h3>
+          <p class="event-time">Tuesday &bull; 5:00 PM - 7:00 PM</p>
+          <p>Join other teens for a fun evening of board games and video games. Snacks and drinks provided. Ages 13 to 18 only.</p>
+        </div>
+      </article>
+
+      <article class="event-list-item" data-category="seniors">
+        <div class="event-date-box">
+          <span class="day">27</span>
+          <span class="month">Nov</span>
+        </div>
+        <div>
+          <h3>Senior Social Hour</h3>
+          <p class="event-time">Thursday &bull; 1:00 PM - 3:00 PM</p>
+          <p>A friendly weekly gathering with coffee, games, and conversation. Newcomers are always welcome. Stop by and make a new friend.</p>
+        </div>
+      </article>
+
+      <article class="event-list-item" data-category="adults">
+        <div class="event-date-box">
+          <span class="day">29</span>
+          <span class="month">Nov</span>
+        </div>
+        <div>
+          <h3>Local Author Reading</h3>
+          <p class="event-time">Saturday &bull; 3:00 PM - 4:30 PM</p>
+          <p>Meet local author James Rivers as he reads from his new novel and answers audience questions. Book signing and refreshments to follow.</p>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- Footer
+
+       Same three column footer used across all pages.
+  -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Visit Us</h4>
+        <p>123 Maple Street<br>Maplebrook, ON K1A 0B1</p>
+        <p>Mon-Fri: 9:00 AM - 8:00 PM<br>Sat-Sun: 10:00 AM - 5:00 PM</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="programs.html">Programs</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <p>(613) 555-0123<br>info@maplebrook-library.ca</p>
+        <div class="footer-social">
+          <a href="#" class="social-icon" aria-label="Facebook">f</a>
+          <a href="#" class="social-icon" aria-label="Twitter">t</a>
+          <a href="#" class="social-icon" aria-label="Instagram">i</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Maplebrook Public Library | <a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a></p>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
