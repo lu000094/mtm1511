@@ -1,0 +1,988 @@
+/* 
+  MTM1511 Final Project -  Maplebrook Public Library
+
+  Mobile-first responsive design: starts at small screens, and then layers on tablet and desktop styles with media queries.
+*/
+
+/* importing Montserrat for headings and Open Sans for body text from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap');
+
+
+/* Custom Properties
+
+   storing all colors and fonts as CSS variables so I can
+   change the whole palette from one place.
+*/
+:root {
+  --forest-green: #1a4d2e;
+  /* --old-forest-green: #143b22; keeping just in case */
+  --sage-green: #4a7c59;
+  --warm-gold: #f8b739;
+  --charcoal: #333;
+  --white: #fff;
+  --mint-cream: #e8f5e9;
+  --light-gray: #f5f5f5;
+  --border-gray: #ddd;
+  --test-red: #ff0000; /* remove this later, used for debugging the grid */
+
+  --font-heading: 'Montserrat', sans-serif;
+  --font-body: 'Open Sans', sans-serif;
+}
+
+
+/* Reset
+
+   Clearing all browser defaults so everything looks the same across browsers.
+*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+ 
+}
+
+/* I'm enabling smooth scrolling so anchor links glide instead of jumping */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 14px;         /* This is the mobile base — bumped to 16px at tablet */
+  line-height: 1.5;
+  color: var(--charcoal);
+  background-color: var(--white);
+  -webkit-font-smoothing: antialiased; /* added for mac displays */
+  overflow-x: hidden; /* quick fix for horizontal scroll issue on mobile */
+}
+
+/* I'm making all images responsive by default so they never overflow their containers */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;        /* removes the small gap below inline images */
+}
+
+/* I removed the default underline on links and set them to inherit parent color */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;      /* I'll add bullets back manually where needed */
+}
+
+
+/* Typography
+
+   All headings use Montserrat in forest-green for a consistent branded feel.
+*/
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  color: var(--forest-green);
+}
+
+h1 {
+  font-size: 24px;
+  line-height: 28px;
+  font-weight: 700;       /* Bold — the heaviest weight */
+}
+
+h2 {
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 600;       /* Semi-bold, slightly lighter than h1 for hierarchy */
+}
+
+h3 {
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 600;
+}
+
+p {
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 12px;
+}
+
+
+/* Buttons
+
+   I styled buttons with uppercase text and letter spacing for a label like look.
+*/
+.btn {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease; /* changed from background color to all */
+}
+
+/* Primary button — gold background so it pops against the green theme */
+.btn-primary {
+  background-color: var(--warm-gold);
+  color: var(--forest-green);
+}
+
+.btn-primary:hover {
+  background: #e0a42c; /* using shorthand here */
+}
+
+/* Secondary button: forest-green background, used for less prominent actions */
+.btn-secondary {
+  background-color: var(--forest-green);
+  color: var(--white);
+}
+
+.btn-secondary:hover {
+  background-color: rgb(21, 61, 36); 
+}
+
+
+/* Layout Utilities
+
+  .container centers content and caps it at 1200px so lines don't get too long.
+*/
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;         /* auto on left/right centers a block element */
+  padding: 0 16px;
+}
+
+.section { padding: 40px 16px; }
+
+.section-alt {
+  background-color: var(--light-gray);  /* Alternating section background for visual rhythm */
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 24px;
+  color: var(--forest-green);
+}
+
+
+/* Header
+
+   using position: sticky so the header stays visible when scrolling.
+*/
+.site-header {
+  background-color: var(--forest-green);
+  padding: 12px 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;           /* Keeps header above all other content */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  /* Subtle shadow for depth */
+}
+
+/* I'm using flexbox to spread the logo, nav, and actions across the header */
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Hamburger menu button — only visible on mobile */
+.menu-toggle {
+  background: none;
+  border: none;
+  color: var(--white);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 4px 8px;
+  margin-left: -5px; /* idk why this works but it aligns it with the logo */
+}
+
+/* I gave the logo a bordered box style instead of just plain text */
+.site-logo {
+  background-color: var(--white);
+  color: var(--forest-green) !important; /* overriding a weird plugin style */
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 12px;
+  padding: 8px 12px;
+  border: 2px solid var(--warm-gold);    /* Gold border ties it into the color scheme */
+  border-radius: 4px;
+}
+
+.search-btn {
+  background: none;
+  border: none;
+  color: var(--white);
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+/* Desktop nav and actions are hidden on mobile — shown at 768px */
+.main-nav, .header-actions {
+  display: none;
+}
+
+
+/* Movile Nav
+AI-Generated: Mobile menu overlay styling.
+   Same promt used as in index.html — AI returned HTML + CSS + JS together.
+   Full-screen overlay menu that slides over everything when the hamburger is tapped.
+*/
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;          /* Full viewport height */
+  background-color: var(--forest-green);
+  z-index: 99999; /* forced to 99999 to overlap the new video player component */
+  padding: 20px;
+}
+
+.mobile-menu.active {
+  display: block !important; /* had to add important because of specificity issue with JS */
+}
+
+/* positioned the close button in the top-right corner with absolute positioning */
+.mobile-menu-close {
+  background: none;
+  border: none;
+  color: var(--white);
+  font-size: 32px;
+  cursor: pointer;
+  position: absolute;
+  top: 12px;
+  right: 16px;
+}
+
+.mobile-menu ul {
+  margin-top: 63px; /* approx header height */
+}
+
+/*  using border bottom dividers between menu items instead of bullets */
+.mobile-menu li {
+  border-bottom: 1px solid var(--sage-green);
+}
+
+/* display: block makes the entire row tappable, not just the text */
+.mobile-menu a {
+  display: block;
+  color: var(--white);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 18px;
+  padding: 16px 0;        /* bigger padding for easy tap targets on mobile */
+}
+
+.mobile-menu a:hover,
+.mobile-menu a.active {
+  color: var(--warm-gold); /* Gold highlight for hover and current page */
+}
+
+
+/* Hero Section
+
+   I'm using a background image with a semi transparent overlay so the text is readable.
+   The ::after holds the image, ::before holds the green overlay, and .hero-card
+  sits on top of both with z-index: 3.
+*/
+.hero {
+  position: relative;      /* I need this so the pseudo-elements position inside here */
+  min-height: 500px;
+  padding: 60px 16px 80px;
+  text-align: center;
+  overflow: hidden;
+  display: flex;
+  align-items: center;     /*  centers the hero card vertically */
+  justify-content: center;
+}
+
+/* Background image layer */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;                /* Shorthand for top/right/bottom/left: 0 */
+  background-image: url('../images/hero-library.jpg');
+  -webkit-background-size: cover; /* legacy safari support */
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+}
+
+/* Semi-transparent green overlay on top of the image */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgba(26, 77, 46, 0.75);  /* 75% opacity forest green */
+  z-index: 2;
+}
+
+/* The card sits above both layers so the text is fully readable */
+.hero-card {
+  position: relative;
+  z-index: 3;              /* Above ::after (1) and ::before (2) */
+  background-color: var(--mint-cream);
+  border: 3px solid var(--warm-gold);
+  border-radius: 10px;
+  padding: 40px 24px;
+  max-width: 640px;
+  margin: 0 auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.hero-card h1 {
+  margin-bottom: 16px;
+  color: var(--forest-green);
+}
+
+.hero-card p {
+  color: var(--charcoal);
+  margin-bottom: 24px;
+}
+
+
+/* Grids and Cards
+
+   I'm using CSS Grid for all card layouts — single column on mobile,
+   then switching to multi-column at tablet/desktop breakpoints.
+*/
+
+.quick-access-grid,
+.events-grid,
+.services-grid,
+.programs-grid {
+  display: grid;
+  grid-template-columns: 1fr;  /* Single column on mobile */
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.quick-access-grid { gap: 20px; }
+
+/* I gave all cards a border, rounded corners, and a hover lift effect */
+.quick-card,
+.event-card,
+.service-card,
+.program-card {
+  background-color: var(--white);
+  border: 1px solid var(--border-gray);
+  border-radius: 8px;
+  overflow: hidden;        /* Clips the image corners to match the border radius */
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.quick-card { display: block; }  /* Makes the whole card a clickable link */
+
+/* Cards lift on hover with a shadow for a nice interactive feel */
+.quick-card:hover,
+.event-card:hover,
+.service-card:hover,
+.program-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+/* Card image areas — I'm using background-image instead of <img> */
+.quick-card-image,
+.event-image,
+.service-image,
+.program-image {
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+}
+
+/* mixed formatting for quick edits */
+.quick-card-image { height: 180px; background-color: var(--sage-green); }
+  .event-image { height: 220px; background-color: var(--forest-green); } 
+.service-image { height: 200px; background-color: var(--sage-green); }
+.program-image { height: 220px; background-color: var(--sage-green); }
+
+/* Card body padding — consistent spacing inside each card type */
+.quick-card-body,
+.event-content,
+.service-content,
+.program-content {
+  padding: 24px 20px;
+}
+
+.quick-card-body { text-align: center; }
+
+.quick-card h3,
+.event-card h3,
+.service-content h3,
+.program-content h3 {
+  margin-bottom: 10px;
+}
+
+.event-card h3,
+.service-content h3,
+.program-content h3 {
+  font-size: 20px;
+}
+
+.quick-card p,
+.event-card p,
+.service-content p,
+.program-content p {
+  font-size: 14px;
+  margin: 0;
+}
+
+.event-card p,
+.service-content p,
+.program-content p {
+  line-height: 22px;
+}
+
+/* I used slightly different grays for card text */
+.quick-card p { color: #666; }
+.service-content p, .program-content p { color: #555; }
+
+/* I styled the event date as a small gold label above the title */
+.event-date {
+  color: var(--warm-gold);
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+/* shape program tags like small pills*/
+.program-tag {
+  display: inline-block;
+  background-color: var(--mint-cream);
+  color: var(--forest-green);
+  padding: 5px 12px;
+  border-radius: 14px;    /* High radius makes it pill shaped */
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+
+/* Inner Pages 
+
+   I styled .page-header as a green banner at the top of every page.
+*/
+.page-header {
+  background-color: var(--forest-green);
+  color: var(--white);
+  padding: 40px 16px;
+  text-align: center;
+}
+
+/* Overriding the forest green heading color to white inside the banner */
+.page-header h1 {
+  color: var(--white);
+  margin-bottom: 8px;
+}
+
+.page-header p {
+  color: var(--mint-cream);
+  margin: 0;
+}
+
+/* .content-block caps width at 800px for comfortable reading line lengths */
+.content-block {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.content-block h2 {
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+
+.content-block h2:first-child {
+  margin-top: 0;           /* No top gap on the very first heading */
+}
+
+.content-block p {
+  margin-bottom: 16px;
+}
+
+/* I'm adding bullet points back here since content lists need them for readability */
+.content-list {
+  list-style: disc;
+  padding-left: 24px;
+  margin-bottom: 16px;
+}
+
+.content-list li {
+  margin-bottom: 8px;
+}
+
+/* Values grid — single column on mobile, expands at tablet breakpoint */
+.values-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.value-card {
+  background-color: var(--mint-cream);
+  padding: 20px;
+  border-radius: 6px;
+}
+
+.value-card h3 {
+  margin-bottom: 8px;
+}
+
+.value-card p {
+  margin: 0;
+  font-size: 14px;
+}
+
+
+/* Event list View
+
+   I styled the filter buttons as pill shaped toggles that fill green when active.
+*/
+.events-filter {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.filter-btn {
+  background-color: var(--white);
+  border: 1px solid var(--sage-green);
+  color: var(--sage-green);
+  padding: 8px 16px;
+  margin: 4px;
+  border-radius: 20px;    /* Pill shape to match the header buttons */
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+  background-color: var(--forest-green);
+  color: var(--white);
+  border-color: var(--forest-green);
+}
+
+.event-list {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* I'm using a two column grid: date box on the left, event details on the right */
+.event-list-item {
+  display: grid;
+  grid-template-columns: 80px 1fr;  /* Fixed 80px date box plus flexible content */
+  gap: 16px;
+  background-color: var(--white);
+  border: 1px solid var(--border-gray);
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 16px;
+  align-items: start;
+}
+
+/* I styled the date box as a compact green block with day on top and month below */
+.event-date-box {
+  background-color: var(--forest-green);
+  color: var(--white);
+  text-align: center;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.event-date-box .day {
+  display: block;
+  font-size: 24px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 1;         /* Tight line-height so day and month can sit close together */
+}
+
+.event-date-box .month {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.event-list-item h3 {
+  margin-bottom: 4px;
+}
+
+.event-time {
+  font-size: 13px;
+  color: var(--sage-green);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.event-list-item p {
+  font-size: 13px;
+  margin: 0;
+}
+
+
+/* Contact
+
+   split the contact page into two sections using grid:
+   info panel on the left, form on the right (stacked on mobile).
+*/
+.contact-layout {
+  display: grid;
+  grid-template-columns: 1fr;  /* Single column on mobile, side by side at 768px */
+  gap: 24px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.contact-info {
+  background-color: var(--mint-cream);
+  padding: 24px;
+  border-radius: 6px;
+}
+
+.contact-info h2 {
+  margin-bottom: 16px;
+}
+
+.contact-item {
+  margin-bottom: 16px;
+}
+
+/* I used display: block on the label so it sits above the value on its own line */
+.contact-item strong {
+  display: block;
+  color: var(--forest-green);
+  font-family: var(--font-heading);
+  margin-bottom: 4px;
+}
+
+.contact-item p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.contact-form {
+  background-color: var(--white);
+  padding: 24px;
+  border: 1px solid var(--border-gray);
+  border-radius: 6px;
+}
+
+.contact-form h2 {
+  margin-bottom: 16px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: var(--forest-green);
+}
+
+/* I gave all form the same padding, border, and font so they look consistent */
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border-gray);
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-size: 14px;
+}
+
+/* replaced the default browser focus ring with a green border for a cleaner look */
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--sage-green);
+}
+
+.form-group textarea {
+  resize: vertical;        /* only allows vertical resizing so it doesn't break the layout */
+  min-height: 100px;
+}
+
+/* Success/error message — hidden by default, shown via JS adding .show */
+.form-message {
+  padding: 12px;
+  background-color: var(--mint-cream);
+  border-left: 4px solid var(--sage-green);  /* Green left accent bar */
+  margin-top: 16px;
+  border-radius: 4px;
+  display: none;
+}
+
+.form-message.show {
+  display: block;
+}
+
+
+/* Footer
+
+   used a grid layout for the footer columns, similar to the card grids above.
+*/
+.site-footer {
+  background-color: var(--forest-green);
+  color: var(--white);
+  padding: 40px 16px 20px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr;  /* Single column on mobile, 3 columns at tablet */
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto 24px;
+}
+
+/* used the gold color for footer headings to tie into the button color */
+.footer-col h4 {
+  color: var(--warm-gold);
+  margin-bottom: 12px;
+  font-family: var(--font-heading);
+  font-size: 16px;
+}
+
+.footer-col ul li {
+  margin-bottom: 8px;
+}
+
+.footer-col a {
+  color: var(--white);
+  font-size: 14px;
+}
+
+.footer-col a:hover {
+  color: var(--warm-gold);  /* matches the heading color on hover */
+}
+
+/* I'm using flexbox with gap for the social icons row */
+.footer-social {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+/* Social icons are circular with a gold border. they fill gold on hover */
+.social-icon {
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--warm-gold);
+  border-radius: 50%;      /* 50% makes a perfect circle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--warm-gold);
+  transition: background-color 0.2s;
+}
+
+.social-icon:hover {
+  background-color: var(--warm-gold);
+  color: var(--forest-green);  /* Inverts to green-on-gold */
+}
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 20px;
+  border-top: 1px solid var(--sage-green);  /* Divider between footer columns and copyright */
+  text-align: center;
+  font-size: 12px;
+}
+
+.footer-bottom a {
+  color: var(--white);
+}
+
+.footer-bottom a:hover {
+  color: var(--warm-gold);
+}
+
+/* 
+.old-footer-layout {
+  display: flex;
+  justify-content: space-between;
+}
+*/
+
+
+/*  Responsive: Tablet ( size 768px+)
+
+   At this breakpoint I switch from mobile to tablet layout:
+   bigger fonts, desktop nav visible, also grids go to 2 columns.
+*/
+@media (min-width: 768px) {
+  body {
+    font-size: 16px;       /* Bumping up from the 14px mobile size */
+  }
+
+  h1 { font-size: 32px; line-height: 36px; }
+  h2 { font-size: 24px; line-height: 28px; }
+  p { font-size: 16px; line-height: 24px; }
+
+  .container {
+    padding: 0 24px;       /* More room on wider screens */
+  }
+
+  /*  hiding the mobile hamburger and search icons at tablet size */
+  .menu-toggle, .search-btn {
+    display: none;
+  }
+
+  .site-header {
+    padding: 16px 24px;
+  }
+
+  /* Desktop nav appears at this breakpoint */
+  .main-nav {
+    display: block;
+  }
+
+  /* using flexbox with gap to lay nav links out in a horizontal row */
+  .main-nav ul {
+    display: flex;
+    gap: 20px;
+  }
+
+  .main-nav a {
+    color: var(--white);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 14px;
+    padding: 6px 4px;
+    transition: color 0.2s;
+  }
+
+  .main-nav a:hover,
+  .main-nav a.active {
+    color: var(--warm-gold);
+  }
+
+  /* Header action buttons (login, sign up) appear at tablet */
+  .header-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  /* I styled these as pill shaped outline buttons to keep the header clean */
+  .header-btn {
+    background-color: transparent;
+    border: 1px solid var(--sage-green);
+    color: var(--white);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .header-btn:hover {
+    background-color: var(--sage-green);  /* Fills in on hover */
+  }
+
+  .site-logo {
+    font-size: 14px;       /* Slightly larger logo text on wider screens */
+  }
+
+  .hero {
+    min-height: 600px;
+    padding: 80px 24px 100px;
+  }
+
+  .hero-card {
+    padding: 56px 48px;    /* More padding inside the hero card */
+  }
+
+  .section {
+    padding: 60px 24px;
+  }
+
+  /* All card grids jump to 2 columns at tablet width */
+  .quick-access-grid, .events-grid, .services-grid, .values-grid, .programs-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  /* Footer splits to 3 columns at tablet */
+  .footer-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  
+  .contact-layout {
+    grid-template-columns: 1fr 2fr; /*info panel takes 1/3, form takes 2/3 */
+  }
+
+  .page-header {
+    padding: 60px 24px;
+  }
+}
+
+
+@media (min-width: 992px) and (max-width: 1023px) {
+  .hero-card {
+    max-width: 90%;
+  }
+}
+
+
+/* Responsive: Desktop (1024px+)
+
+   At desktop I widen the hero, expand grids to 3-4 columns and give the nav links more room.
+*/
+@media (min-width: 1024px) {
+  .hero {
+    min-height: 680px;
+    padding: 100px 24px 120px;
+  }
+
+  .hero-card {
+    padding: 64px 56px;
+    max-width: 720px;
+  }
+
+  /* Quick access goes to 4 columns */
+  .quick-access-grid {
+    grid-template-columns: repeat(4, 1fr); /* one card per category*/
+  }
+
+  /* Events and programs get 3 columns at desktop */
+  .events-grid, .programs-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .main-nav ul {
+    gap: 28px;             /* More space between nav links at desktop */
+  }
+
+  .main-nav a {
+    font-size: 15px;
+  }
+}
+
+.hidden-desktop-v2 { display: none; } /* delete later */
